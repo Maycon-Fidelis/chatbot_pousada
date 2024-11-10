@@ -1,0 +1,4 @@
+BIBLIOTECA USADAS:
+pip install openai
+pip install openai==0.28.0
+pip install dotenv
