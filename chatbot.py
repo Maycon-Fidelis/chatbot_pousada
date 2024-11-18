@@ -2,6 +2,7 @@ import openai
 import os
 import json
 from dotenv import load_dotenv
+from reserva import carregar_dados, verificar_disponibilidade, adicionar_reserva, atualizar_status_reserva
 
 load_dotenv()
 
