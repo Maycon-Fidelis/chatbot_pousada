@@ -3,6 +3,7 @@ import os
 import json
 from dotenv import load_dotenv
 from reserva import carregar_dados, verificar_disponibilidade, adicionar_reserva, atualizar_status_reserva
+from datetime import datetime
 
 load_dotenv()
 
@@ -64,19 +65,60 @@ def iniciar_chatbot():
         else:
             resposta = enviar_mensagem(texto, lista_mensagens)
 
-            try:
-                dados = json.loads(resposta)
+        try:
+            dados = json.loads(resposta)
 
-                if dados["action"] == "reserva":
-                    print("Log de reserva:")
-                    print(f"Data de Entrada: {dados.get('data_entrada')}")
-                    print(f"Data de Saída: {dados.get('data_saida')}")
-                    print(f"Tipo de Quarto: {dados.get('tipo_quarto')}")
-                    print(f"Status: {dados.get('status')}")
+            if dados["action"] == "reserva":
+                caminho_csv = "reservas.csv"  # Defina o caminho para o arquivo CSV
+                reservas = carregar_dados(caminho_csv)
+
+                data_entrada = dados.get("data_entrada")
+                data_saida = dados.get("data_saida")
+                tipo_quarto = dados.get("tipo_quarto")
+
+                # Verificar disponibilidade
+                disponibilidade = verificar_disponibilidade(reservas, data_entrada, data_saida, tipo_quarto)
+
+                if disponibilidade:
+                    # Adicionar reserva
+                    nova_reserva = {
+                        "ReservaID": str(len(reservas) + 1),
+                        "HospedeNome": "Nome do Cliente",
+                        "HospedeContato": "Contato",
+                        "DataEntrada": data_entrada,
+                        "DataSaida": data_saida,
+                        "TipoQuarto": tipo_quarto,
+                        "StatusReserva": "Confirmada",
+                        "NumeroPessoas": 1,
+                        "ValorTotal": 0.0, 
+                        "DataReserva": datetime.now().strftime('%Y-%m-%d'),
+                        "Notas": ""
+                    }
+
+                    adicionar_reserva(caminho_csv, nova_reserva)
+
+                    print(json.dumps({
+                        "action": "reserva",
+                        "data_entrada": data_entrada,
+                        "data_saida": data_saida,
+                        "tipo_quarto": tipo_quarto,
+                        "status": "disponível"
+                    }))
                 else:
-                    print("Resposta não relacionada a reserva:", resposta)
+                    print(json.dumps({
+                        "action": "reserva",
+                        "data_entrada": data_entrada,
+                        "data_saida": data_saida,
+                        "tipo_quarto": tipo_quarto,
+                        "status": "não disponível"
+                    }))
+            else:
+                print("Resposta não relacionada a reserva:", resposta)
 
-            except json.JSONDecodeError:
-                print("Resposta recebida (não está em formato JSON):", resposta)
+        except json.JSONDecodeError:
+            print("Resposta recebida (não está em formato JSON):", resposta)
+
+        except json.JSONDecodeError:
+            print("Resposta recebida (não está em formato JSON):", resposta)
 
 iniciar_chatbot()
