@@ -1,6 +1,2 @@
 ReservaID,HospedeNome,HospedeContato,DataEntrada,DataSaida,TipoQuarto,StatusReserva,NumeroPessoas,ValorTotal,DataReserva,Notas
-1, João Silva, joao@gmail.com, 2024-11-15, 2024-11-20, Duplo, Confirmada,2,500.0, 2024-10-01, Prefere quarto com vista para o mar
-2, Maria Oliveira, maria@gmail.com, 2024-12-01, 2024-12-07, Simples, Pendente,1,300.0, 2024-10-05, ---
-3, José Santos, jose@gmail.com, 2024-12-15, 2024-12-20, Suíte, Cancelada,3,750.0, 2024-10-10, Solicitou cama extra
-3,Carlos Pereira,77777-7777,2024-11-12,2024-11-14,Standard,Confirmada,1,250.0,2024-11-01,Reserva especial
-3,Carlos Pereira,77777-7777,2024-11-12,2024-11-14,Standard,Confirmada,1,250.0,2024-11-01,Reserva especial
+1,John Doe,+5511999999999,2024-11-20,2024-11-25,Standard,Confirmada,2,1000.00,2024-11-01,""
