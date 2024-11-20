@@ -22,10 +22,12 @@ def enviar_mensagem(mensagem, lista_mensagens=[]):
     
     return resposta
 
-def salvar_reserva(nome, tipo_quarto, data_checkin, data_checkout, num_pessoas):
+def salvar_reserva(nome, telefone, email, tipo_quarto, data_checkin, data_checkout, num_pessoas):
     arquivo_csv = 'reservas.csv'
     reserva = {
         "Nome": nome,
+        "Telefone": telefone,
+        "E-mail": email,
         "Tipo do Quarto": tipo_quarto,
         "Data Check-in": data_checkin,
         "Data Check-out": data_checkout,
@@ -45,14 +47,16 @@ def fazer_reserva():
     print("Claro! Vamos realizar a sua reserva.")
     
     nome = input("Qual é o seu nome? ")
+    telefone = input("Qual é o seu número de telefone? ")
+    email = input("Qual é o seu e-mail? ")
     tipo_quarto = input("Qual o tipo de quarto? (Standard, Luxo, Suíte Premium) ")
     data_checkin = input("Data de check-in (formato AAAA-MM-DD): ")
     data_checkout = input("Data de check-out (formato AAAA-MM-DD): ")
     num_pessoas = input("Número de pessoas: ")
 
     try:
-        salvar_reserva(nome, tipo_quarto, data_checkin, data_checkout, num_pessoas)
-        print("Reserva realizada com sucesso! Receberá um e-mail de confirmação em breve.")
+        salvar_reserva(nome, telefone, email, tipo_quarto, data_checkin, data_checkout, num_pessoas)
+        print("Reserva realizada com sucesso! Você receberá um e-mail de confirmação em breve.")
     except Exception as e:
         print(f"Ocorreu um erro ao registrar sua reserva: {e}")
 
