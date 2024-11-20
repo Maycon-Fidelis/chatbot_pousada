@@ -1,8 +1,7 @@
 import openai
 import os
-import csv
-from datetime import datetime
 from dotenv import load_dotenv
+from reserva import fazer_reserva
 
 load_dotenv()
 
@@ -10,6 +9,7 @@ chave_api = os.getenv('API_KEY')
 openai.api_key = chave_api
 
 def enviar_mensagem(mensagem, lista_mensagens=[]):
+    """Envia mensagem para a API da OpenAI e retorna a resposta."""
     lista_mensagens.append({"role": "user", "content": mensagem})
 
     response = openai.ChatCompletion.create(
@@ -22,45 +22,8 @@ def enviar_mensagem(mensagem, lista_mensagens=[]):
     
     return resposta
 
-def salvar_reserva(nome, telefone, email, tipo_quarto, data_checkin, data_checkout, num_pessoas):
-    arquivo_csv = 'reservas.csv'
-    reserva = {
-        "Nome": nome,
-        "Telefone": telefone,
-        "E-mail": email,
-        "Tipo do Quarto": tipo_quarto,
-        "Data Check-in": data_checkin,
-        "Data Check-out": data_checkout,
-        "Número de Pessoas": num_pessoas,
-        "Data da Reserva": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    }
-
-    arquivo_existe = os.path.isfile(arquivo_csv)
-
-    with open(arquivo_csv, mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=reserva.keys())
-        if not arquivo_existe:
-            writer.writeheader()
-        writer.writerow(reserva)
-
-def fazer_reserva():
-    print("Claro! Vamos realizar a sua reserva.")
-    
-    nome = input("Qual é o seu nome? ")
-    telefone = input("Qual é o seu número de telefone? ")
-    email = input("Qual é o seu e-mail? ")
-    tipo_quarto = input("Qual o tipo de quarto? (Standard, Luxo, Suíte Premium) ")
-    data_checkin = input("Data de check-in (formato AAAA-MM-DD): ")
-    data_checkout = input("Data de check-out (formato AAAA-MM-DD): ")
-    num_pessoas = input("Número de pessoas: ")
-
-    try:
-        salvar_reserva(nome, telefone, email, tipo_quarto, data_checkin, data_checkout, num_pessoas)
-        print("Reserva realizada com sucesso! Você receberá um e-mail de confirmação em breve.")
-    except Exception as e:
-        print(f"Ocorreu um erro ao registrar sua reserva: {e}")
-
 def iniciar_chatbot():
+    """Inicia o chatbot e gerencia as interações do usuário."""
     lista_mensagens = [
         {"role": "system", "content": """
         Você é um chatbot especializado em informações turísticas e na nossa pousada, chamada Pousada Paraíso Tropical.
@@ -81,9 +44,9 @@ def iniciar_chatbot():
             - Preço médio: A partir de R$ 350 por noite.  
 
         3. Suíte Premium:  
-                - Descrição: Suíte exclusiva com decoração sofisticada, equipada com uma banheira de hidromassagem.  
-                - Capacidade: Até 2 pessoas (ideal para casais em lua de mel ou viagens especiais).  
-                - Preço médio: A partir de R$ 500 por noite.
+            - Descrição: Suíte exclusiva com decoração sofisticada, equipada com uma banheira de hidromassagem.  
+            - Capacidade: Até 2 pessoas (ideal para casais em lua de mel ou viagens especiais).  
+            - Preço médio: A partir de R$ 500 por noite.
 
         - Serviços inclusos:
             - Café da manhã: Incluso na diária, com uma ampla variedade de itens regionais e internacionais.  
@@ -115,20 +78,22 @@ def iniciar_chatbot():
 
         Como chatbot, sua função é:
             1. Responder dúvidas sobre a pousada, como serviços, localização e tipos de quartos.  
-            2. Orientar sobre reservas (mas sem realizar ou processar as reservas diretamente).  
+            2. Orientar sobre reservas.  
             3. Recomendar passeios e atividades para os hóspedes que visitam Maceió.  
         """}
     ]
 
     while True:
-        texto = input("Escreva aqui sua mensagem: ")
+        texto = input("Escreva aqui sua mensagem (ou digite 'sair' para encerrar): ")
 
         if texto.lower() == "sair":
+            print("Obrigada por usar nosso chatbot. Até logo!")
             break
         elif "reservar" in texto.lower() or "reserva" in texto.lower():
-            fazer_reserva()
+            fazer_reserva()  # Chama a função de reserva
         else:
             resposta = enviar_mensagem(texto, lista_mensagens)
             print("Resposta recebida:", resposta)
 
-iniciar_chatbot()
+if __name__ == "__main__":
+    iniciar_chatbot()
