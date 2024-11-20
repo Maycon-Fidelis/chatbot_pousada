@@ -18,11 +18,6 @@ O principal objetivo desse projeto é usar os conceitos aprendidos na matéria d
 - dotenv
 - pandas
 
-<!-- ## Demonstração
-<div align="center">
-<img src="https://github.com/user-attachments/assets/1629eadd-c083-4906-a52a-cafcff5b1ac1" width="35%">
-</div> -->
-
 ## Como Executar o Projeto Localmente
 
 ### Requisitos

@@ -4,14 +4,11 @@ import csv
 from datetime import datetime
 from dotenv import load_dotenv
 
-# Carregar variáveis de ambiente
 load_dotenv()
 
-# Configurar a chave da API OpenAI
 chave_api = os.getenv('API_KEY')
 openai.api_key = chave_api
 
-# Função para enviar mensagens para o chatbot
 def enviar_mensagem(mensagem, lista_mensagens=[]):
     lista_mensagens.append({"role": "user", "content": mensagem})
 
@@ -25,7 +22,6 @@ def enviar_mensagem(mensagem, lista_mensagens=[]):
     
     return resposta
 
-# Função para salvar reserva em CSV
 def salvar_reserva(nome, tipo_quarto, data_checkin, data_checkout, num_pessoas):
     arquivo_csv = 'reservas.csv'
     reserva = {
@@ -37,35 +33,29 @@ def salvar_reserva(nome, tipo_quarto, data_checkin, data_checkout, num_pessoas):
         "Data da Reserva": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
 
-    # Verificar se o arquivo já existe
     arquivo_existe = os.path.isfile(arquivo_csv)
 
-    # Abrir o arquivo no modo append e salvar os dados
     with open(arquivo_csv, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.DictWriter(file, fieldnames=reserva.keys())
-        if not arquivo_existe:  # Escrever o cabeçalho se o arquivo for novo
+        if not arquivo_existe:
             writer.writeheader()
         writer.writerow(reserva)
 
-# Fluxo de reserva
 def fazer_reserva():
     print("Claro! Vamos realizar a sua reserva.")
     
-    # Coletar informações do cliente
     nome = input("Qual é o seu nome? ")
     tipo_quarto = input("Qual o tipo de quarto? (Standard, Luxo, Suíte Premium) ")
     data_checkin = input("Data de check-in (formato AAAA-MM-DD): ")
     data_checkout = input("Data de check-out (formato AAAA-MM-DD): ")
     num_pessoas = input("Número de pessoas: ")
 
-    # Salvar a reserva
     try:
         salvar_reserva(nome, tipo_quarto, data_checkin, data_checkout, num_pessoas)
         print("Reserva realizada com sucesso! Receberá um e-mail de confirmação em breve.")
     except Exception as e:
         print(f"Ocorreu um erro ao registrar sua reserva: {e}")
 
-# Iniciar o chatbot
 def iniciar_chatbot():
     lista_mensagens = [
         {"role": "system", "content": """
@@ -137,5 +127,4 @@ def iniciar_chatbot():
             resposta = enviar_mensagem(texto, lista_mensagens)
             print("Resposta recebida:", resposta)
 
-# Iniciar o programa
 iniciar_chatbot()
