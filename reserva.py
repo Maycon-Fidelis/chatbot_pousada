@@ -62,8 +62,8 @@ def fazer_reserva():
     print("Vamos verificar a disponibilidade antes de continuar com sua reserva.")
     
     tipo_quarto = input("Qual o tipo de quarto? (Standard, Luxo, Suíte Premium): ")
-    data_checkin = input("Data de check-in (formato DD/MM/AAAA): ")
-    data_checkout = input("Data de check-out (formato DD/MM/AAAA): ")
+    data_checkin = input("Data de check-in (formato DD-MM-AAAA): ")
+    data_checkout = input("Data de check-out (formato DD-MM-AAAA): ")
 
     if verificar_disponibilidade(data_checkin, data_checkout, tipo_quarto):
         print("O quarto está disponível! Vamos prosseguir com a sua reserva.")

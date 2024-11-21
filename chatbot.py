@@ -124,7 +124,7 @@ def iniciar_chatbot():
 
         intencao = analisar_intencao(texto)
 
-        if intencao == "reserva":
+        if intencao == "'reserva'":
             print("Iniciando o processo de reserva...")
             fazer_reserva()
         else:
