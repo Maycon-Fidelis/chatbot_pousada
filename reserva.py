@@ -15,13 +15,13 @@ def verificar_disponibilidade(data_checkin, data_checkout, tipo_quarto):
         with open(ARQUIVO_RESERVAS, mode="r") as arquivo_csv:
             reader = csv.DictReader(arquivo_csv)
             reservas_ativas = 0
-            nova_data_checkin = datetime.strptime(data_checkin, "%Y-%m-%d")
-            nova_data_checkout = datetime.strptime(data_checkout, "%Y-%m-%d")
+            nova_data_checkin = datetime.strptime(data_checkin, "%d-%m-%Y")
+            nova_data_checkout = datetime.strptime(data_checkout, "%d-%m-%Y")
 
             for linha in reader:
                 if linha["Tipo do Quarto"] == tipo_quarto:
-                    data_checkin_existente = datetime.strptime(linha["Data Check-in"], "%Y-%m-%d")
-                    data_checkout_existente = datetime.strptime(linha["Data Check-out"], "%Y-%m-%d")
+                    data_checkin_existente = datetime.strptime(linha["Data Check-in"], "%d-%m-%Y")
+                    data_checkout_existente = datetime.strptime(linha["Data Check-out"], "%d-%m-%Y")
 
                     if not (nova_data_checkout <= data_checkin_existente or nova_data_checkin >= data_checkout_existente):
                         reservas_ativas += 1
@@ -52,7 +52,7 @@ def salvar_reserva(nome, telefone, email, tipo_quarto, data_checkin, data_checko
                 data_checkin, 
                 data_checkout, 
                 num_pessoas, 
-                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                datetime.now().strftime("%d-%m-%Y %H:%M:%S")
             ])
     except Exception as e:
         print(f"Erro ao salvar a reserva: {e}")
@@ -62,8 +62,8 @@ def fazer_reserva():
     print("Vamos verificar a disponibilidade antes de continuar com sua reserva.")
     
     tipo_quarto = input("Qual o tipo de quarto? (Standard, Luxo, Suíte Premium): ")
-    data_checkin = input("Data de check-in (formato AAAA-MM-DD): ")
-    data_checkout = input("Data de check-out (formato AAAA-MM-DD): ")
+    data_checkin = input("Data de check-in (formato DD/MM/AAAA): ")
+    data_checkout = input("Data de check-out (formato DD/MM/AAAA): ")
 
     if verificar_disponibilidade(data_checkin, data_checkout, tipo_quarto):
         print("O quarto está disponível! Vamos prosseguir com a sua reserva.")

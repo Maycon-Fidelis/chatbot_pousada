@@ -35,6 +35,7 @@ Certifique-se de ter o python instalado e ter uma API da OPENAI para adicionar a
 3. Instale as dependências.
 
 4. Crie uma chave de API no CHATGPT e crie um arquivo .env com a chave, dessa forma:
+    <br>
     Para criar sua chave API acesse esse site: [clicando aqui](https://platform.openai.com/settings/organization/api-keys).
     ```bash
         API_KEY = 'SUA_API' 
